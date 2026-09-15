@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: GPL-2.0
+#
+# vim: set ts=8 sw=8 noet tw=80 cc=80 fo+=t :
+
+include utils.mk
+
+# Configurations
+DEBUG ?= 1
+PYTHON ?= python3
+ARGS ?=
+MAIN := jupiter.main
+
+.PHONY: all format format-check lint lint-fix clean help
+
+all: clean format
+	$(call print_y,Run jupiter.)
+	@DEBUG=$(DEBUG) $(PYTHON) -m $(MAIN)  $(ARGS)
+
+# ---------| formating with ruff
+format:
+	$(call print_y,Fromatting files with ruff...)
+	ruff format --config ./jupiter.toml
+
+format-check:
+	$(call print_y,Check fromatting ruff file configuration)
+	ruff format --config ./jupiter.toml --check .
+
+lint:
+	ruff check --config ./jupiter.toml
+
+lint-fix:
+	ruff check --config ./jupiter.toml --fix
+
+clean:
+	$(call print_y,Cleaning build directories and build files....)
+	find . -name "__pycache__" -type d -exec rm -rf {} +
+	find . -type f -name "*.pyc" -delete
+
+help:
+	$(call print_r,\n      X_ _ _ Jupiter - framework for offensive cybersecurity _ _ _X)
+	@echo
+	$(call help_y,Usage: make <target>)
+	@echo
+	$(call help_g,Targets:)
+	@echo "  all           Run the jupiter framework"
+	@echo "  format        Format the Python source code with Ruff"
+	@echo "  format-check  Check Python code formatting without modifying files"
+	@echo "  clean         Remove Python cache directories"
+	@echo "  help          Display this help message"
+	@echo "  lint          Check Python code with Ruff"
+	@echo "  lint-fix      Fix automatically detected lint issues"
+	@echo
+	$(call help_g,Variables:)
+	@echo "  PYTHON        Python interpreter to use (default: python3)"
+	@echo "  MAIN          Main Python entry point"
+	@echo "  ARGS          Arguments passed to the script"
+	@echo
