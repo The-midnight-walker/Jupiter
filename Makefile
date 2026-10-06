@@ -2,8 +2,6 @@
 #
 # vim: set ts=8 sw=8 noet tw=80 cc=80 fo+=t :
 
-include utils.mk
-
 # ==============
 # CONFIGURATIONS
 # ==============
@@ -49,7 +47,7 @@ format:
 	ruff format --config ./jupiter.toml .
 
 format-check:
-	$(call print_y,Checking formatting with ruff...)
+	$(call print_y,Checking formatting with ruff..)
 	ruff format --config ./jupiter.toml --check .
 
 lint:

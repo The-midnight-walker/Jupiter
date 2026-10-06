@@ -24,3 +24,4 @@ ENV/
 .tldr
 .vscode-ctags
 trash/
+*.log
